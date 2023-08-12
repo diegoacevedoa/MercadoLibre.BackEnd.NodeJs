@@ -1,0 +1,186 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Mercado Libre BackEnd NodeJs",
+    "description": "Test Práctico Mercado Libre Back End en NodeJs",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Productos",
+      "description": "API de productos"
+    }
+  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/api/items?q={query}": {
+      "parameters": [
+        {
+          "name": "query",
+          "in": "path",
+          "required": true,
+          "description": "Nombre del producto que se va a buscar.",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Productos"],
+        "summary": "Consulta todos los registros.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Productos"
+            }
+          }
+        }
+      }
+    },
+    "/api/items/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID del registro que se va a buscar.",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "summary": "Consulta un registro por ID.",
+        "tags": ["Productos"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Producto2"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Item1": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "price": {
+          "properties": {
+            "currency": {
+              "type": "string"
+            },
+            "amount": {
+              "type": "number"
+            },
+            "decimals": {
+              "type": "number"
+            }
+          }
+        },
+        "picture": {
+          "type": "string"
+        },
+        "condition": {
+          "type": "string"
+        },
+        "free_shipping": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Item2": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "price": {
+          "properties": {
+            "currency": {
+              "type": "string"
+            },
+            "amount": {
+              "type": "number"
+            },
+            "decimals": {
+              "type": "number"
+            }
+          }
+        },
+        "picture": {
+          "type": "string"
+        },
+        "condition": {
+          "type": "string"
+        },
+        "free_shipping": {
+          "type": "boolean"
+        },
+        "sold_quantity": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "Producto1": {
+      "properties": {
+        "author": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "lastname": {
+              "type": "string"
+            }
+          }
+        },
+        "categories": {
+          "type": "array"
+        },
+        "items": {
+          "type": "array",
+          "$ref": "#/definitions/Item1"
+        }
+      }
+    },
+    "Producto2": {
+      "properties": {
+        "author": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "lastname": {
+              "type": "string"
+            }
+          }
+        },
+        "items": {
+          "type": "array",
+          "$ref": "#/definitions/Item2"
+        }
+      }
+    },
+    "Productos": {
+      "type": "array",
+      "$ref": "#/definitions/Producto1"
+    }
+  }
+}
