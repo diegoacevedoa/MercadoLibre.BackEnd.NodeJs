@@ -21,7 +21,16 @@
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
-    "/api/items?q=:query": {
+    "/api/items?q={query}": {
+      "parameters": [
+        {
+          "name": "query",
+          "in": "path",
+          "required": true,
+          "description": "Nombre del producto que se va a buscar.",
+          "type": "string"
+        }
+      ],
       "get": {
         "tags": ["Productos"],
         "summary": "Consulta todos los registros.",

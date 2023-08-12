@@ -13,7 +13,7 @@ export const findAll = async (req) => {
         title: item.title,
         price: {
           currency: item.currency_id,
-          amount: item.installments.amount,
+          amount: item.available_quantity,
           decimals: item.price,
         },
         picture: item.thumbnail,
@@ -41,29 +41,38 @@ export const findAll = async (req) => {
 
 export const findOne = async (req) => {
   const { id } = req.params;
+  let descriptions = "";
 
   const detail = await axiosSinToken(API.DETAIL.replace("{id}", id), {}, "GET");
 
-  const description = await axiosSinToken(
-    API.DESCRIPTION.replace("{id}", id),
-    {},
-    "GET"
-  );
-
   if (detail.status == 200) {
+    try {
+      const description = await axiosSinToken(
+        API.DESCRIPTION.replace("{id}", id),
+        {},
+        "GET"
+      );
+
+      if (description.status == 200) {
+        descriptions = description.text;
+      }
+    } catch (error) {}
+
+    const pictures = detail.data.pictures.map((item) => item.url);
+
     const item = {
       id: detail.data.id,
       title: detail.data.title,
       price: {
         currency: detail.data.currency_id,
-        amount: detail.data.price,
+        amount: detail.data.available_quantity,
         decimals: detail.data.price,
       },
-      picture: detail.data.thumbnail,
+      picture: pictures.toString(),
       condition: detail.data.condition,
       free_shipping: detail.data.shipping.free_shipping,
       sold_quantity: detail.data.sold_quantity,
-      description: detail.data.description,
+      description: descriptions,
     };
 
     return {
