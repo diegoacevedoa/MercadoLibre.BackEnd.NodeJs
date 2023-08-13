@@ -1,8 +1,8 @@
-import * as productoService from "../services/producto.service";
+import * as productService from "../services/product.service";
 
 export const findAll = async (req, res) => {
   try {
-    const response = await productoService.findAll(req);
+    const response = await productService.findAll(req);
 
     res.json(response);
   } catch (error) {
@@ -13,7 +13,7 @@ export const findAll = async (req, res) => {
 
 export const findOne = async (req, res) => {
   try {
-    const response = await productoService.findOne(req);
+    const response = await productService.findOne(req);
 
     res.json(response);
   } catch (error) {
