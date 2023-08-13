@@ -7,7 +7,9 @@ export const findAll = async (req) => {
   const data = await axiosSinToken(API.SEARCH.replace("{query}", q), {}, "GET");
 
   if (data.status == 200) {
-    const items = data.data.results.map((item) => {
+    let takeitems = data.data.results.splice(0, 4);
+
+    const items = takeitems.map((item) => {
       return {
         id: item.id,
         title: item.title,
@@ -22,7 +24,7 @@ export const findAll = async (req) => {
       };
     });
 
-    const categories = data.data.results
+    const categories = takeitems
       .map((item) => item.category_id)
       .filter((value, index, self) => self.indexOf(value) === index);
 

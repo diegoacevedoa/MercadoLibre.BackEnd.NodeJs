@@ -4,7 +4,7 @@ import cors from "cors";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger.json";
-import productoRoutes from "./routes/producto.routes";
+import productRoutes from "./routes/product.routes";
 
 const app = express();
 
@@ -21,6 +21,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //routes
-app.use("/api", productoRoutes);
+app.use("/api", productRoutes);
 
 export default app;
