@@ -7,7 +7,7 @@ export const findAll = async (req, res) => {
     res.json(response);
   } catch (error) {
     res.status(500);
-    res.send(error.message);
+    res.json({ message: "Error consultando la información." });
   }
 };
 
@@ -18,6 +18,6 @@ export const findOne = async (req, res) => {
     res.json(response);
   } catch (error) {
     res.status(500);
-    res.send(error.message);
+    res.json({ message: "Error consultando la información." });
   }
 };

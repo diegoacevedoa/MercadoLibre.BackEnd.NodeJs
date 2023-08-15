@@ -9,31 +9,84 @@ export const findAll = async (req) => {
   if (data.status == 200) {
     let takeitems = data.data.results.splice(0, 4);
 
+    const categories = takeitems
+      .map((item) => item.category_id)
+      .filter((value, index, self) => self.indexOf(value) === index);
+
+    let cat = "";
+
+    const resultCategories = await Promise.all(
+      categories.map(async (item) => {
+        try {
+          cat = await axiosSinToken(
+            API.CATEGORY.replace("{cat}", item),
+            {},
+            "GET"
+          );
+
+          if (cat.status == 200) {
+            return cat.data.name;
+          } else {
+            return "";
+          }
+        } catch (error) {
+          return "";
+        }
+      })
+    );
+
+    const currencies = takeitems
+      .map((item) => item.currency_id)
+      .filter((value, index, self) => self.indexOf(value) === index);
+
+    let cur = "";
+
+    const resultCurrencies = await Promise.all(
+      currencies.map(async (item) => {
+        try {
+          cur = await axiosSinToken(
+            API.CURRENCY.replace("{cur}", item),
+            {},
+            "GET"
+          );
+
+          if (cur.status == 200) {
+            return { currency_id: item, currency: cur.data.symbol };
+          } else {
+            return null;
+          }
+        } catch (error) {
+          return null;
+        }
+      })
+    );
+
+    let pesoAregentino = Intl.NumberFormat("es-AR");
+
     const items = takeitems.map((item) => {
       return {
         id: item.id,
         title: item.title,
         price: {
-          currency: item.currency_id,
+          currency: resultCurrencies.find(
+            (itemCur) => itemCur.currency_id == item.currency_id
+          ).currency,
           amount: item.available_quantity,
-          decimals: item.price,
+          decimals: pesoAregentino.format(item.price),
         },
         picture: item.thumbnail,
         condition: item.condition,
         free_shipping: item.shipping.free_shipping,
+        state_name: item.address.state_name,
       };
     });
-
-    const categories = takeitems
-      .map((item) => item.category_id)
-      .filter((value, index, self) => self.indexOf(value) === index);
 
     return {
       author: {
         name: "Diego",
         lastname: "Acevedo",
       },
-      categories: categories,
+      categories: resultCategories.toString(),
       items: items,
     };
   } else {
