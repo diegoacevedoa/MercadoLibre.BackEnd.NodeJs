@@ -85,6 +85,9 @@
             "amount": {
               "type": "number"
             },
+            "value": {
+              "type": "number"
+            },
             "decimals": {
               "type": "number"
             }
@@ -118,6 +121,9 @@
               "type": "string"
             },
             "amount": {
+              "type": "number"
+            },
+            "value": {
               "type": "number"
             },
             "decimals": {

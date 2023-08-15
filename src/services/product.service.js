@@ -3,6 +3,7 @@ import { axiosSinToken } from "../helpers/axiosHelper";
 import * as categoryService from "../services/category.service";
 import * as currencyService from "../services/currency.service";
 import * as descriptionService from "../services/description.service";
+import { calculatePrice } from "../helpers/helpers";
 
 export const findAll = async (req) => {
   const q = req.query.q;
@@ -32,9 +33,9 @@ export const findAll = async (req) => {
       })
     );
 
-    let pesoAregentino = Intl.NumberFormat("es-AR");
-
     const items = takeitems.map((item) => {
+      let valuesPrice = calculatePrice(item.currency_id, item.price);
+
       return {
         id: item.id,
         title: item.title,
@@ -43,7 +44,8 @@ export const findAll = async (req) => {
             (itemCur) => itemCur.currency_id == item.currency_id
           ).currency,
           amount: item.available_quantity,
-          decimals: pesoAregentino.format(item.price),
+          value: valuesPrice.value,
+          decimals: valuesPrice.decimals,
         },
         picture: item.thumbnail,
         condition: item.condition,
@@ -79,7 +81,10 @@ export const findOne = async (req) => {
 
     const pictures = detail.data.pictures.map((item) => item.url);
 
-    let pesoAregentino = Intl.NumberFormat("es-AR");
+    let valuesPrice = calculatePrice(
+      detail.data.currency_id,
+      detail.data.price
+    );
 
     const item = {
       id: detail.data.id,
@@ -87,7 +92,8 @@ export const findOne = async (req) => {
       price: {
         currency: currency.currency,
         amount: detail.data.available_quantity,
-        decimals: pesoAregentino.format(detail.data.price),
+        value: valuesPrice.value,
+        decimals: valuesPrice.decimals,
       },
       picture: pictures.toString(),
       condition: detail.data.condition,
