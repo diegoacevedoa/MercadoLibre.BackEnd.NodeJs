@@ -98,6 +98,9 @@
         },
         "free_shipping": {
           "type": "boolean"
+        },
+        "state_name": {
+          "type": "string"
         }
       }
     },
