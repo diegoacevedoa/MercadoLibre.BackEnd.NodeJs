@@ -139,6 +139,9 @@
         },
         "description": {
           "type": "string"
+        },
+        "category": {
+          "type": "string"
         }
       }
     },
@@ -175,7 +178,7 @@
             }
           }
         },
-        "items": {
+        "item": {
           "type": "array",
           "$ref": "#/definitions/Item2"
         }

@@ -1,5 +1,8 @@
 import { API } from "../helpers/constants";
 import { axiosSinToken } from "../helpers/axiosHelper";
+import * as categoryService from "../services/category.service";
+import * as currencyService from "../services/currency.service";
+import * as descriptionService from "../services/description.service";
 
 export const findAll = async (req) => {
   const q = req.query.q;
@@ -13,25 +16,9 @@ export const findAll = async (req) => {
       .map((item) => item.category_id)
       .filter((value, index, self) => self.indexOf(value) === index);
 
-    let cat = "";
-
     const resultCategories = await Promise.all(
       categories.map(async (item) => {
-        try {
-          cat = await axiosSinToken(
-            API.CATEGORY.replace("{cat}", item),
-            {},
-            "GET"
-          );
-
-          if (cat.status == 200) {
-            return cat.data.name;
-          } else {
-            return "";
-          }
-        } catch (error) {
-          return "";
-        }
+        return await categoryService.findOne(item);
       })
     );
 
@@ -39,25 +26,9 @@ export const findAll = async (req) => {
       .map((item) => item.currency_id)
       .filter((value, index, self) => self.indexOf(value) === index);
 
-    let cur = "";
-
     const resultCurrencies = await Promise.all(
       currencies.map(async (item) => {
-        try {
-          cur = await axiosSinToken(
-            API.CURRENCY.replace("{cur}", item),
-            {},
-            "GET"
-          );
-
-          if (cur.status == 200) {
-            return { currency_id: item, currency: cur.data.symbol };
-          } else {
-            return null;
-          }
-        } catch (error) {
-          return null;
-        }
+        return await currencyService.findOne(item);
       })
     );
 
@@ -96,38 +67,34 @@ export const findAll = async (req) => {
 
 export const findOne = async (req) => {
   const { id } = req.params;
-  let descriptions = "";
 
   const detail = await axiosSinToken(API.DETAIL.replace("{id}", id), {}, "GET");
 
   if (detail.status == 200) {
-    try {
-      const description = await axiosSinToken(
-        API.DESCRIPTION.replace("{id}", id),
-        {},
-        "GET"
-      );
+    let description = await descriptionService.findOne(id);
 
-      if (description.status == 200) {
-        descriptions = description.text;
-      }
-    } catch (error) {}
+    let category = await categoryService.findOne(detail.data.category_id);
+
+    let currency = await currencyService.findOne(detail.data.currency_id);
 
     const pictures = detail.data.pictures.map((item) => item.url);
+
+    let pesoAregentino = Intl.NumberFormat("es-AR");
 
     const item = {
       id: detail.data.id,
       title: detail.data.title,
       price: {
-        currency: detail.data.currency_id,
+        currency: currency.currency,
         amount: detail.data.available_quantity,
-        decimals: detail.data.price,
+        decimals: pesoAregentino.format(detail.data.price),
       },
       picture: pictures.toString(),
       condition: detail.data.condition,
       free_shipping: detail.data.shipping.free_shipping,
       sold_quantity: detail.data.sold_quantity,
-      description: descriptions,
+      description: description,
+      category: category,
     };
 
     return {
@@ -135,7 +102,7 @@ export const findOne = async (req) => {
         name: "Diego",
         lastname: "Acevedo",
       },
-      items: item,
+      item: item,
     };
   } else {
     throw new Error("Error consultando los datos.");
