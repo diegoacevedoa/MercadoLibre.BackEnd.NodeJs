@@ -79,7 +79,8 @@ export const findOne = async (req) => {
 
     let currency = await currencyService.findOne(detail.data.currency_id);
 
-    const pictures = detail.data.pictures.map((item) => item.url);
+    // const pictures = detail.data.pictures.map((item) => item.url);
+    const pictures = detail.data.pictures[0].url;
 
     let valuesPrice = calculatePrice(
       detail.data.currency_id,
