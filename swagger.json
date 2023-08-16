@@ -85,6 +85,9 @@
             "amount": {
               "type": "number"
             },
+            "value": {
+              "type": "number"
+            },
             "decimals": {
               "type": "number"
             }
@@ -120,6 +123,9 @@
             "amount": {
               "type": "number"
             },
+            "value": {
+              "type": "number"
+            },
             "decimals": {
               "type": "number"
             }
@@ -138,6 +144,9 @@
           "type": "number"
         },
         "description": {
+          "type": "string"
+        },
+        "category": {
           "type": "string"
         }
       }
@@ -175,7 +184,7 @@
             }
           }
         },
-        "items": {
+        "item": {
           "type": "array",
           "$ref": "#/definitions/Item2"
         }
