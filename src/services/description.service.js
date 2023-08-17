@@ -10,7 +10,7 @@ export const findOne = async (id) => {
     );
 
     if (description.status == 200) {
-      return description.text;
+      return description.data.plain_text;
     } else {
       return "";
     }
