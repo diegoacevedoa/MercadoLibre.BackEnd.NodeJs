@@ -50,7 +50,7 @@ export const findAll = async (req) => {
         picture: item.thumbnail,
         condition: item.condition,
         free_shipping: item.shipping.free_shipping,
-        state_name: item.address.state_name,
+        state_name: item.address?.state_name ?? "",
       };
     });
 
