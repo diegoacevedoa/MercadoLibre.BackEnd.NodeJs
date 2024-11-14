@@ -1,9 +1,9 @@
-import { API } from "../helpers/constants";
-import { axiosSinToken } from "../helpers/axiosHelper";
+import { API } from "../configs/constants";
+import { axiosSinToken } from "../configs/axiosHelper";
 import * as categoryService from "../services/category.service";
 import * as currencyService from "../services/currency.service";
 import * as descriptionService from "../services/description.service";
-import { calculatePrice } from "../helpers/helpers";
+import { calculatePrice } from "../configs/helpers";
 
 export const findAll = async (req) => {
   const q = req.query.q;

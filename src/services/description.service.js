@@ -1,5 +1,5 @@
-import { API } from "../helpers/constants";
-import { axiosSinToken } from "../helpers/axiosHelper";
+import { API } from "../configs/constants";
+import { axiosSinToken } from "../configs/axiosHelper";
 
 export const findOne = async (id) => {
   try {
