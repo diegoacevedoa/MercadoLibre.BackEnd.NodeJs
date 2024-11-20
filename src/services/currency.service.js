@@ -1,20 +1,18 @@
-import { API } from "../helpers/constants";
-import { axiosSinToken } from "../helpers/axiosHelper";
+import { API } from "../configs/constants";
+import Axios from "../configs/http";
 
 export const findOne = async (item) => {
-  try {
-    let cur = await axiosSinToken(
-      API.CURRENCY.replace("{cur}", item),
-      {},
-      "GET"
-    );
+  let url = API.CURRENCY.replace("{cur}", item);
 
-    if (cur.status == 200) {
-      return { currency_id: item, currency: cur.data.symbol };
-    } else {
-      return null;
-    }
-  } catch (error) {
+  const config = {
+    method: "GET",
+  };
+
+  const response = await Axios.request({ url, config });
+
+  if (response.status == 200) {
+    return { currency_id: item, currency: response.data.symbol };
+  } else {
     return null;
   }
 };
