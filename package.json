@@ -1,6 +1,6 @@
 {
   "name": "mercadolibre.backend.nodejs",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Test Práctico Mercado Libre Back End en NodeJs",
   "main": "index.js",
   "scripts": {

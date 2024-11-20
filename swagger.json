@@ -44,7 +44,7 @@
         }
       }
     },
-    "/api/items/{id}": {
+    "/api/item/{id}": {
       "parameters": [
         {
           "name": "id",

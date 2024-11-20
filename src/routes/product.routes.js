@@ -5,6 +5,6 @@ const router = Router();
 
 router.get("/items", findAll);
 
-router.get("/items/:id", findOne);
+router.get("/item/:id", findOne);
 
 export default router;
